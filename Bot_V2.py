@@ -1,60 +1,31 @@
-import pygame, sys, os
-from pygame.locals import *
+import time
 
 from PIL import ImageGrab
 import pyautogui
-import time
 
-# (83, 83, 83) -- Cacto      (247, 247, 247)  -- Fundo
-
-X = 550.0
-Y1 = 415
-Y2 = 385
-Y3 = 340
-
-Pontos = 0
-
+X = 450.0  # X2 = X + 90
+Y1 = 380
+Y2 = 410
 
 def print_tela():
-    Print = ImageGrab.grab()
-    return Print
-
+    screen = ImageGrab.grab()
+    return screen
 
 def ler_tela(screen):
-    pixel_color_1 = screen.getpixel((int(X), Y1))
-    pixel_color_2 = screen.getpixel((int(X), Y2))
-    pixel_color_3 = screen.getpixel((int(X), Y3))
+    aux_color = screen.getpixel((int(X), Y1))
+    for x in range(int(X), int(X+90)):
+        for y in range(Y1, Y2):
+            color = screen.getpixel((x, y))
+            if color != aux_color:
+                return True
+            else:
+                aux_color = color
 
-    if pixel_color_1 == (83, 83, 83):
-        return 0
-    elif pixel_color_2 == (83, 83, 83):
-        return 1
-    elif pixel_color_3 == (83, 83, 83):
-        return 2
-    else:
-        return 3
-
-
-print("Iniciando em 1 segundo")
-time.sleep(1)
-Contador_img = 0
+print("Iniciando em 3 segundos")
+time.sleep(3)
 
 while True:
     screen = print_tela()
-    if ler_tela(screen) != 3:
-
-        if ler_tela(screen) == 0:
-            pyautogui.press("up")
-            print("Em baixo")
-
-        elif ler_tela(screen) == 1:
-            pyautogui.press("down")
-            print("No meio")
-
-        elif ler_tela(screen) == 2:
-            pyautogui.press("down")
-            print("Em cima")
-
-        Pontos += 1
+    if ler_tela(screen):
+        pyautogui.press("up")
         X += 0.5
-        print(Pontos)
